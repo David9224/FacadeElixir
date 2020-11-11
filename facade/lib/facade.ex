@@ -17,10 +17,15 @@ defmodule Facade do
       ScheduleServer.destroy(content.content)
       ScheduleServer.shutdown(content.content)
     end
+
+    def read(content) do
+      ScheduleServer.read(content.content)
+    end
   end
 
   defimpl IFacade.IFacade, for: Any do
     def start_server(_), do: {:error}
     def stop_server(_), do: {:error}
+    def read(_), do: {:error}
   end
 end

@@ -1,2 +1,2 @@
-#ExUnit.configure(exclude: [wip: true])
+ExUnit.configure(exclude: [wip: true])
 ExUnit.start()

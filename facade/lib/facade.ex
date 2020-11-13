@@ -7,19 +7,19 @@ defmodule Facade do
 
   defimpl IFacade.IFacade, for: FacadeImpl do
 
-    def start_server(content) do
-      ScheduleServer.read_system_config_file(content.content)
-      ScheduleServer.initial(content.content)
-      ScheduleServer.initial_context(content.content)
+    def start_server(facade) do
+      ScheduleServer.read_system_config_file(facade.content)
+      ScheduleServer.initial(facade.content)
+      ScheduleServer.initial_context(facade.content)
     end
 
-    def stop_server(content) do
-      ScheduleServer.destroy(content.content)
-      ScheduleServer.shutdown(content.content)
+    def stop_server(facade) do
+      ScheduleServer.destroy(facade.content)
+      ScheduleServer.shutdown(facade.content)
     end
 
-    def read(content) do
-      ScheduleServer.read(content.content)
+    def read(facade) do
+      ScheduleServer.read(facade.content)
     end
   end
 

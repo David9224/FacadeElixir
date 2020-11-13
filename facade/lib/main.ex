@@ -10,6 +10,7 @@ defmodule Main do
     IO.puts("-------------------")
     IFacade.IFacade.stop_server(facade)
     IO.puts("-------------------")
+    {:ok}
   end
 
 end

@@ -1,8 +1,10 @@
 defmodule ScheduleServer do
   use GenServer
 
+  @name :bit_facade
+
   def start_link(initial_value \\ 0) do
-    GenServer.start_link(__MODULE__, initial_value)
+    GenServer.start_link(__MODULE__, initial_value, name: @name)
   end
 
   def init(state), do: {:ok, state}
@@ -24,46 +26,46 @@ defmodule ScheduleServer do
   end
 
   def shutdown(subject) do
-    GenServer.cast(subject, {:shut_down, self()})
+    GenServer.cast(subject, :shut_down)
   end
 
   def read(subject), do: GenServer.call(subject, :read)
 
   def handle_cast({:read_system, observer_pid}, state) do
     read_system_config_file()
-    state = "read_system_config_file"
+    state = :read_system_config_file
     {:noreply, state}
   end
 
   def handle_cast({:initial, observer_pid}, state) do
     initial()
-    state = "initial"
+    state = :initial
     {:noreply, state}
   end
 
   def handle_cast({:initial_context, observer_pid}, state) do
     initial_context()
-    state = "initial_context"
+    state = :initial_context
     {:noreply, state}
   end
 
   def handle_cast({:destroy, observer_pid}, state) do
     destroy()
-    state = "destroy"
+    state = :destroy
     {:noreply, state}
   end
 
-  def handle_cast({:shut_down, observer_pid}, state) do
+  def handle_cast(:shut_down, state) do
     shutdown()
-    state = "shutdown"
+    state = :shutdown
     {:noreply, state}
   end
 
-  def handle_call(:read, __reader_id, state) do
+  def handle_call(:read, _from_id, state) do
     {:reply, state, state}
   end
 
-  def read_system_config_file() do
+  defp read_system_config_file() do
     IO.puts("Reading system config files...")
     try do
       :timer.sleep(1000)
@@ -73,19 +75,19 @@ defmodule ScheduleServer do
     end
   end
 
-  def initial() do
+  defp initial() do
     IO.puts("Initializing")
   end
 
-  def initial_context() do
+  defp initial_context() do
     IO.puts("Initializing context")
   end
 
-  def destroy() do
+  defp destroy() do
     IO.puts("Destroying")
   end
 
-  def shutdown() do
+  defp shutdown() do
     IO.puts("Shutdown down....")
   end
 
